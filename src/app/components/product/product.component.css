@@ -1,0 +1,7 @@
+.linkEdit{
+    cursor: pointer;
+}
+
+.linkEdit:hover {
+    text-decoration: underline;
+}

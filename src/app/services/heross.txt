@@ -1,0 +1,81 @@
+// import { Injectable, OnInit } from '@angular/core';
+// import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Injectable, OnInit } from '@angular/core';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Hero } from '../interfaces/hero';
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+
+
+@Injectable()
+export class HeroService implements OnInit {
+	//private headers = new Headers({ 'Content-Type': 'application/json' });
+
+
+	private homeUrl = 'http://localhost:8081/';
+
+	constructor(private http: Http) {
+		console.log('http initialized');
+	}
+
+	getHeros(): Promise<Hero[]> {
+		let hd = new Headers();
+		hd.append('Content-Type', 'application/json');
+		let options = new RequestOptions({ headers: hd });
+		return this.http.get(this.homeUrl, options).toPromise()
+			.then(res => res.json().data as Hero[])
+			.catch(this.errorHandle);
+	}
+
+	getJSON(): Observable<Hero[]> {
+		let hd = new Headers();
+		hd.append('Content-Type', 'application/json');
+		let options = new RequestOptions({ headers: hd });
+		return this.http.get(`https://jsonplaceholder.typicode.com/posts`, options)
+			.map((res: any) => res.json())
+			.catch(this.errorHandle);
+	}
+
+
+	private errorHandle(err: any): Promise<any> {
+		console.error('An error occurred', err); // for demo purposes only
+		return Promise.reject(err.message || err);
+	}
+
+
+	loadedCB: any;
+	ngOnInit() {
+		console.log('ngOnInit');
+		this.tryAndLoad();
+	}
+
+	tryAndLoad() {
+		console.log('loading....')
+		this.load().subscribe((res: any) => {
+			this.loadedCB = res;
+			if (this.loadedCB) {
+				console.log('LoadCB', this.loadedCB);
+				//  return Observable.of(this.loadedCB);
+			}
+		});
+	}
+
+	load() {
+		let hd = new Headers();
+		hd.append('Content-Type', 'application/json');
+		let authToken = localStorage.getItem('auth_token');
+		let myheaders = new Headers({ 'Accept': 'application/json' });
+		myheaders.append('Authorization', `Bearer ${authToken}`);
+
+		let options = new RequestOptions({ headers: myheaders });
+		//return this.http.get('https://jsonplaceholder.typicode.com/posts', options)
+		return this.http.get('http://localhost:8081/', options)
+			.map((res: Response) => {
+				console.log('********', res);
+				return res.json();
+			})
+	}
+}
+

@@ -1,0 +1,48 @@
+<p *ngFor='let hero of heros'>
+	<ngb-alert type="success" (close)='deleteHero(hero.id)'>
+		<h5 (click)='showUpdate(hero)'> 
+			{{hero.id}} ---> {{hero.name}}
+		</h5>
+	</ngb-alert>
+</p>
+
+<ng-template #respDialog let-c="close" let-d="dismiss">
+	<div class="modal-header">
+		<h4 class="modal-title">{{respTitle}}</h4>
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<p>
+			{{respBody}}
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+	</div>
+</ng-template>
+
+<ng-template #updateDialog let-c="close" let-d="dismiss">
+	<div class="modal-header">
+		<h4 class="modal-title">{{respTitle}}</h4>
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<p>
+			<input class='form-contorl' [(ngModel)]='newHero' type="text" value={{respBody}}>
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="updateHero(respID)">Update</button>
+		<button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Cancel</button>
+	</div>
+</ng-template>
+
+
+
+<button class="btn btn-primary" (click)="postHeros(respDialog)">Add Heros</button>
