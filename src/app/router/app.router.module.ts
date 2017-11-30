@@ -36,6 +36,7 @@ const routers = [
 		]
 	},
 	{ path: 'login', component: LoginComponent },
+	{ path: 'lazy', loadChildren: '../components/lazy/lazyModule#LazyModule'},
 	{ path: '**', redirectTo: '' }
 ];
 
