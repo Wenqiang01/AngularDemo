@@ -55,7 +55,6 @@ export class HeroService implements OnInit {
 		//let authToken = localStorage.getItem('auth_token');
 		//let myheaders = new Headers({ 'Accept': 'application/json' });
 		//myheaders.append('Authorization', `Bearer ${authToken}`);
-
 		let options = new RequestOptions({ headers: hd });
 		return this.http.get('https://jsonplaceholder.typicode.com/posts', options)
 			//return this.http.get('http://localhost:8081/', options)
@@ -64,5 +63,8 @@ export class HeroService implements OnInit {
 				return res.json();
 			})
 	}
+
+	
+	
 
 }
